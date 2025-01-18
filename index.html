@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova.JxJ SHOP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #000205, #0a1529, #1a2c4e);
+            color: #ffffff;
+            position: relative;
+            overflow-x: hidden;
+            perspective: 2000px;
+            min-height: 200vh;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000205, #0a1529, #1a2c4e);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease-out;
+        }
+
+        .loading-spinner {
+            width: 100px;
+            height: 100px;
+            border: 4px solid #64b5f6;
+            border-top: 4px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stars {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #fff, 0 0 20px #64b5f6, 0 0 25px #1e88e5;
+            animation: twinkle var(--duration) infinite cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .galaxy {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle at center, 
+                rgba(100,181,246,0.3) 0%, 
+                rgba(33,150,243,0.2) 30%,
+                rgba(25,118,210,0.1) 50%,
+                transparent 70%);
+            border-radius: 50%;
+            filter: blur(8px);
+            animation: galaxyPulse var(--duration) infinite cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nebula {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle at center,
+                rgba(156,39,176,0.1) 0%,
+                rgba(103,58,183,0.1) 30%,
+                rgba(63,81,181,0.1) 50%,
+                transparent 70%);
+            border-radius: 50%;
+            filter: blur(15px);
+            animation: nebulaPulse 15s infinite cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes nebulaPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.2; }
+            50% { transform: scale(1.8) rotate(180deg); opacity: 0.4; }
+        }
+
+        @keyframes galaxyPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.3; }
+            50% { transform: scale(2) rotate(180deg); opacity: 0.6; }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(2); }
+        }
+
+        .shooting-star {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(to right, #fff, #64b5f6, #1976d2, transparent);
+            border-radius: 50%;
+            animation: shoot 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            opacity: 0;
+            filter: drop-shadow(0 0 20px #64b5f6);
+        }
+
+        .shooting-star-large {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(to right, #fff, #64b5f6, #1976d2, transparent);
+            border-radius: 50%;
+            animation: shootLarge 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            opacity: 0;
+            filter: drop-shadow(0 0 25px #64b5f6);
+        }
+
+        .comet {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background: linear-gradient(to right, #fff, #ba68c8, #7b1fa2, transparent);
+            border-radius: 50%;
+            animation: cometShoot 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            opacity: 0;
+            filter: drop-shadow(0 0 30px #ba68c8);
+        }
+
+        @keyframes cometShoot {
+            0% {
+                transform: translateX(120vw) translateY(-50vh) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-120vw) translateY(150vh) scale(0.3);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateX(120vw) translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-120vw) translateY(120vh) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shootLarge {
+            0% {
+                transform: translateX(120vw) translateY(0) rotate(45deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-120vw) translateY(120vh) rotate(405deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        .Nova {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border: 4px solid rgba(100, 181, 246, 0.3);
+            border-radius: 50%;
+            animation: rotate 30s linear infinite;
+            transform-style: preserve-3d;
+        }
+
+        .Nova::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(156, 39, 176, 0.2);
+            border-radius: 50%;
+            animation: rotateReverse 20s linear infinite;
+        }
+
+        .Nova::after {
+            content: '';
+            position: absolute;
+            width: 120%;
+            height: 120%;
+            border: 3px solid rgba(33, 150, 243, 0.2);
+            border-radius: 50%;
+            animation: rotateSlow 40s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg) perspective(2000px) rotateX(30deg); }
+            100% { transform: rotate(360deg) perspective(2000px) rotateX(30deg); }
+        }
+
+        @keyframes rotateReverse {
+            0% { transform: rotate(360deg) perspective(2000px) rotateX(-45deg); }
+            100% { transform: rotate(0deg) perspective(2000px) rotateX(-45deg); }
+        }
+
+        @keyframes rotateSlow {
+            0% { transform: rotate(0deg) perspective(2000px) rotateX(60deg); }
+            100% { transform: rotate(360deg) perspective(2000px) rotateX(60deg); }
+        }
+
+        header {
+            background: linear-gradient(90deg, rgba(10,20,40,0.8), rgba(30,60,114,0.8), rgba(42,82,152,0.8));
+            padding: 40px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            margin-bottom: 200px;
+            border-bottom: 3px solid rgba(100,181,246,0.3);
+            transform-style: preserve-3d;
+            transform: translateZ(0);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        header:hover {
+            transform: translateZ(50px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        header h1 {
+            font-size: 4.5rem;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(to right, #fff, #64b5f6, #1976d2, #fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 5s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: drop-shadow(0 0 15px #64b5f6); }
+            50% { filter: drop-shadow(0 0 35px #64b5f6); }
+        }
+
+        nav {
+            margin-top: 35px;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 60px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 500;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            padding: 12px 0;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #64b5f6, #1976d2, transparent);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 20px #64b5f6;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .nav-particle {
+            position: fixed;
+            pointer-events: none;
+            width: 4px;
+            height: 4px;
+            background: #64b5f6;
+            border-radius: 50%;
+            animation: particleFade 1s forwards cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes particleFade {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .home-section {
+            text-align: center;
+            padding: 300px 20px;
+            background: linear-gradient(45deg, rgba(10, 20, 40, 0.7), rgba(30, 60, 114, 0.7), rgba(42, 82, 152, 0.7));
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            margin-bottom: 300px;
+            border-top: 3px solid rgba(100,181,246,0.2);
+            border-bottom: 3px solid rgba(100,181,246,0.2);
+            transform: translateZ(0);
+            transition: transform 0.5s ease;
+        }
+
+        .home-section:hover {
+            transform: translateZ(30px);
+        }
+
+        .home-section h2 {
+            font-size: 5.5rem;
+            margin-bottom: 90px;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.5);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 30px #64b5f6, 0 0 40px #64b5f6;
+            }
+            to {
+                text-shadow: 0 0 40px #1e3c72, 0 0 50px #2a5298;
+            }
+        }
+
+        .btn-primary {
+            padding: 25px 50px;
+            background: linear-gradient(45deg, #2196f3, #1976d2, #1565c0);
+            color: white;
+            text-decoration: none;
+            font-size: 1.6rem;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 35px rgba(0, 0, 0, 0.3);
+            margin: 90px;
+            display: inline-block;
+            border: 4px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(33, 150, 243, 0.4);
+            background: transparent;
+            border: 4px solid #2196f3;
+        }
+
+        .btn-primary:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .shop-section {
+            padding: 250px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(5, 15, 30, 0.8), rgba(10, 25, 47, 0.8), rgba(23, 42, 69, 0.8));
+            backdrop-filter: blur(20px);
+            margin-bottom: 300px;
+            border-top: 3px solid rgba(100,181
+            ,246,0.2);
+            border-bottom: 3px solid rgba(100,181,246,0.2);
+            transform: translateZ(0);
+            transition: transform 0.5s ease;
+        }
+
+        .shop-section:hover {
+            transform: translateZ(30px);
+        }
+
+        .shop-section h2 {
+            font-size: 4.5rem;
+            margin-bottom: 200px;
+            color: #fff;
+            text-shadow: 0 0 30px #64b5f6;
+        }
+
+        .product-card {
+            background: rgba(33, 150, 243, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 35px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+            padding: 90px;
+            text-align: center;
+            border: 3px solid rgba(33, 150, 243, 0.3);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            margin: 90px auto;
+            max-width: 800px;
+            transform-style: preserve-3d;
+        }
+
+        .product-card:hover {
+            transform: translateY(-20px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(33, 150, 243, 0.4);
+        }
+
+        .product-card h3 {
+            font-size: 2.8rem;
+            margin: 50px 0;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(100,181,246,0.6);
+        }
+
+        .price {
+            font-size: 2rem;
+            color: #64b5f6;
+            margin: 50px 0;
+            text-shadow: 0 0 15px #64b5f6;
+        }
+
+        .buy-button {
+            padding: 25px 60px;
+            background: linear-gradient(45deg, #2196f3, #1976d2, #1565c0);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            margin: 20px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .buy-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(33, 150, 243, 0.4);
+        }
+
+        footer {
+            background: linear-gradient(90deg, rgba(30,60,114,0.9), rgba(42,82,152,0.9));
+            color: white;
+            text-align: center;
+            padding: 60px;
+            margin-top: 250px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border-top: 2px solid rgba(100,181,246,0.3);
+        }
+
+        footer a {
+            color: #64b5f6;
+            text-decoration: none;
+            transition: all 0.5s;
+            font-size: 1.2rem;
+        }
+
+        footer a:hover {
+            color: #fff;
+            text-shadow: 0 0 15px #64b5f6;
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div id="stars-container"></div>
+    <div class="Nova"></div>
+
+    <header>
+        <h1>Nova.JxJ</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#shop">Shop</a></li>
+                <li><a href="https://discord.com/invite/novajxj" target="_blank">Discord</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="home-section animate-on-scroll">
+        <h2>Nova.JxJ</h2>
+        <p>Premium Software Solutions</p>
+        <a href="#shop" class="btn-primary">View Products</a>
+    </section>
+      <section id="shop" class="shop-section animate-on-scroll">
+          <h2>Our Products</h2>
+          <div class="product-container">
+              <div class="product-card">
+                  <div class="special-offer">
+                      <h3>Acc.JxJ</h3>
+                      <button class="buy-button premium" onclick="checkout('Acc.JxJ', '20')">Purchase Now - $20</button>
+                  </div>
+              </div>
+              <div class="product-card">
+                  <div class="special-offer">
+                      <h3>Nova.JxJ</h3>
+                      <button class="buy-button premium" onclick="checkout('Nova.JxJ', '10')">Purchase Now - $10</button>
+                  </div>
+              </div>
+              <div class="product-card">
+                  <div class="special-offer">
+                      <h3>Nova + Unbanned Account Bundle</h3>
+                      <button class="buy-button premium" onclick="checkout('Nova + Unbanned Account', '15')">Purchase Now - $15</button>
+                  </div>
+              </div>
+              <div class="product-card">
+                  <div class="special-offer">
+                      <h3>Unbanned Account</h3>
+                      <button class="buy-button premium" onclick="checkout('Unbanned Account', '5')">Purchase Now - $5</button>
+                  </div>
+              </div>   
+          </div>
+      </section>
+
+    <footer>
+        <p>© 2024 Nova.JxJ - All Rights Reserved</p>
+        <p>Need Help? Join our <a href="https://discord.com/invite/novajxj" target="_blank">Discord Community</a></p>
+    </footer>
+
+    <script>
+        // Loading animation
+        window.addEventListener('load', () => {
+            const loader = document.querySelector('.loading-overlay');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 800);
+            }, 1500);
+        });
+
+        // Create stars and space elements
+        function createStars() {
+            const starsContainer = document.getElementById('stars-container');
+            const numberOfStars = 200;
+
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'stars';
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 100}vh`;
+                star.style.setProperty('--duration', `${2 + Math.random() * 4}s`);
+                starsContainer.appendChild(star);
+            }
+        }
+
+        function createShootingStars() {
+            const body = document.body;
+            setInterval(() => {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                shootingStar.style.left = `${Math.random() * 100}vw`;
+                shootingStar.style.top = `${Math.random() * 100}vh`;
+                body.appendChild(shootingStar);
+                
+                setTimeout(() => {
+                    shootingStar.remove();
+                }, 6000);
+            }, 8000);
+        }
+
+        function createLargeShootingStars() {
+            const body = document.body;
+            setInterval(() => {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star-large';
+                shootingStar.style.left = `${Math.random() * 100}vw`;
+                shootingStar.style.top = `${Math.random() * 100}vh`;
+                body.appendChild(shootingStar);
+                
+                setTimeout(() => {
+                    shootingStar.remove();
+                }, 8000);
+            }, 12000);
+        }
+
+        function createComets() {
+            const body = document.body;
+            setInterval(() => {
+                const comet = document.createElement('div');
+                comet.className = 'comet';
+                comet.style.left = `${Math.random() * 100}vw`;
+                comet.style.top = `${Math.random() * 100}vh`;
+                body.appendChild(comet);
+                
+                setTimeout(() => {
+                    comet.remove();
+                }, 12000);
+            }, 15000);
+        }
+
+        // Product card interactions
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                card.style.transform = `
+                    perspective(1000px) 
+                    rotateX(${rotateX}deg) 
+                    rotateY(${rotateY}deg) 
+                    scale3d(1.05, 1.05, 1.05)
+                `;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'none';
+            });
+        });
+
+        // Navigation particle effects
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('mousemove', (e) => {
+                const particle = document.createElement('div');
+                particle.className = 'nav-particle';
+                particle.style.left = e.clientX + 'px';
+                particle.style.top = e.clientY + 'px';
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 1000);
+            });
+        });
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-on-scroll').forEach((element) => {
+            observer.observe(element);
+        });
+
+        // Initialize all effects
+        window.onload = () => {
+            createStars();
+            createShootingStars();
+            createLargeShootingStars();
+            createComets();
+        };
+
+        // Checkout function
+        function checkout(plan, price) {
+            const message = `To purchase the ${plan} (${price}):
+1. Visit https://cash.app/$jupiter9099
+2. Send payment of ${price}
+3. Join https://discord.com/invite/novajxj
+4. Submit your payment receipt`;
+            alert(message);
+        }
+    </script>
+</body>
+</html>
