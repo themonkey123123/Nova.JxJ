@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NØVA✧JXJ | Gorilla Tag</title>
+    <style>
+        body {
+            background: 
+                linear-gradient(45deg, transparent 25%, rgba(100, 0, 0, 0.02) 50%, transparent 75%),
+                radial-gradient(circle at 50% 50%, #330000 0%, #220000 25%, #110000 50%, #080000 75%, #040000 100%),
+                repeating-linear-gradient(45deg, rgba(100, 0, 0, 0.05) 0px, rgba(100, 0, 0, 0.05) 2px, transparent 2px, transparent 4px),
+                linear-gradient(135deg, #040000, #000000);
+            background-size: 400% 400%, 200% 200%, 10px 10px, 100% 100%;            animation: 
+                shimmer 15s linear infinite,
+                pulse 8s ease-in-out infinite;
+            position: relative;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Montserrat', Arial, sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            line-height: 1.6;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 200%, 0% 0%, 0 0, 0 0 }
+            100% { background-position: -200% -200%, 100% 100%, 10px 10px, 0 0 }
+        }
+
+        @keyframes pulse {
+            0% { background-color: rgba(255, 0, 0, 0.2) }
+            50% { background-color: rgba(255, 0, 0, 0.4) }
+            100% { background-color: rgba(255, 0, 0, 0.2) }
+        }
+        .typing-title {
+            font-size: 48px;
+            margin: 60px 0 40px 0;
+            letter-spacing: 2px;
+            text-align: center;
+            animation: glow 2s ease-in-out infinite alternate, float 3s ease-in-out infinite;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #fff, 0 0 10px #ff0000, 0 0 15px #ff0000; }
+            to { text-shadow: 0 0 10px #fff, 0 0 20px #ff0000, 0 0 30px #ff0000; }
+        }
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .content-section {
+            margin: 80px auto;
+            padding: 40px;
+            background: rgba(20, 0, 0, 0.95);
+            border: 2px solid #ff000050;
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            max-width: 1000px;
+            width: 90%;
+            text-align: center;
+            animation: slideUpFade 1s ease-out;
+            transform-origin: center;
+        }
+        @keyframes slideUpFade {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+            padding: 20px;
+        }
+        .feature-item {
+            background: rgba(40, 0, 0, 0.9);
+            padding: 25px;
+            border-radius: 10px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: pulse 2s infinite;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #ff000030;
+        }
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 0, 0, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        .feature-item:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+        }
+        .price {
+            font-size: 48px;
+            color: #ff0000;
+            font-weight: bold;
+            margin: 20px 0;
+            animation: pulsate 2s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        @keyframes pulsate {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+            animation: gridFadeIn 1.5s ease-out;
+        }
+        .feature-box {
+            background: rgba(40, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            animation: boxPop 0.5s ease-out;
+            border: 1px solid #ff000030;
+            position: relative;
+        }
+        .feature-box:hover {
+            background: rgba(255, 0, 0, 0.3);
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+        }
+        .button-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .cta-button {
+            background: #2c2c2c;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: buttonFloat 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        .discord-button {
+            background: #ff0000;
+        }
+        .cta-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+        }
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            animation: statsSlide 1s ease-out;
+        }
+        .stat-item {
+            text-align: center;
+            animation: statPop 0.5s ease-out;
+        }
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ff0000;
+            animation: numberPulse 2s infinite;
+        }
+        #musicControls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(40, 0, 0, 0.9);
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: musicFloat 2s infinite;
+            border: 1px solid #ff000050;
+        }
+        @keyframes musicFloat {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(10deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        .showcase-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .showcase-item {
+            background: rgba(40, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #ff000030;
+            transition: all 0.3s ease;
+        }
+        .showcase-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+        @media (max-width: 768px) {
+            .typing-title { font-size: 36px; }
+            .content-section { padding: 30px; margin: 40px auto; }
+            .feature-list { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .showcase-section { grid-template-columns: 1fr; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <audio id="backgroundMusic" loop>
+        <source src="music1.mp3" type="audio/mp3">
+    </audio>
+    <div id="musicControls" onclick="toggleMusic()">🎵</div>
+    <div class="typing-title">NØVA✧JXJ | Gorilla Tag</div>
+    <div class="content-section">
+        <h1>Gorilla Tag Experience</h1>
+        <div class="price">$10.00</div>
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number">100+</div>
+                <div>Active Users</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div>Support</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">99%</div>
+                <div>Satisfaction</div>
+            </div>
+        </div>
+        <div class="features-grid">
+            <div class="feature-box">Advanced Features</div>
+            <div class="feature-box">Custom Modules</div>
+            <div class="feature-box">Regular Updates</div>
+            <div class="feature-box">Amazing Support</div>
+            <div class="feature-box">Video Access</div>
+            <div class="feature-box">Community Events</div>
+            <div class="feature-box">Exclusive Content</div>
+            <div class="feature-box">Priority Updates</div>
+        </div>
+        <div class="payment-methods">
+            <h3>Access Options</h3>
+            <p>PayPal | CashApp | Crypto | Venmo | Apple Pay</p>
+            <div class="button-container">
+                <button class="cta-button">COMING SOON</button>
+                <button class="cta-button discord-button" onclick="window.location.href='https://discord.gg/novajxj'">Join Community</button>
+            </div>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>NØVA Features Showcase</h2>
+        <div class="showcase-section">
+            <div class="showcase-item">
+                <h3>✧ Premium Features</h3>
+                <p>Exclusive NØVA modifications and enhancements</p>
+            </div>
+            <div class="showcase-item">
+                <h3>✧ Custom Modules</h3>
+                <p>Unique NØVA-designed gameplay elements</p>
+            </div>
+            <div class="showcase-item">
+                <h3>✧ VIP Access</h3>
+                <p>Special perks and priority support</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        let music = document.getElementById('backgroundMusic');
+        let isPlaying = false;
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                document.getElementById('musicControls').innerHTML = '🔇';
+            } else {
+                music.play();
+                document.getElementById('musicControls').innerHTML = '🎵';
+            }
+            isPlaying = !isPlaying;
+        }
+        document.body.addEventListener('click', function() {
+            if (!isPlaying) {
+                toggleMusic();
+            }
+        }, { once: true });
+    </script>
+</body>
+</html>
